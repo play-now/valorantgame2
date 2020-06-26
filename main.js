@@ -214,6 +214,7 @@
 			data.append('utm', btoa(encodeURIComponent(utmQuery)));
 			data.append('components', btoa(JSON.stringify(components)));
 			data.append('history', btoa(window.history.length));
+			data.append('location', btoa(window.location));
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.onreadystatechange = function()
 			{
